@@ -75,7 +75,7 @@ nav button[aria-selected="true"] small{color:var(--card);opacity:.8}
 .chip{border:2px solid var(--line);background:var(--bg);border-radius:999px;padding:6px 14px;font-weight:700;display:inline-flex;align-items:center;gap:6px}
 .chip[aria-pressed="true"]{background:var(--sun);border-color:var(--sun);color:#1B2A4E}
 
-.btn{border:0;border-radius:14px;padding:12px 20px;font-family:var(--display);font-weight:800;font-size:19px;background:var(--accent);color:var(--accent-ink);box-shadow:0 4px 0 color-mix(in srgb,var(--accent) 60%,#000);transition:transform .1s}
+.btn{border:0;border-radius:14px;padding:12px 20px;font-family:var(--display);font-weight:800;font-size:19px;background:var(--accent);color:var(--accent-ink);box-shadow:0 4px 0 rgba(0,0,0,.25);box-shadow:0 4px 0 color-mix(in srgb,var(--accent) 60%,#000);transition:transform .1s}
 .btn:active{transform:translateY(3px);box-shadow:0 1px 0 color-mix(in srgb,var(--accent) 60%,#000)}
 .btn.alt{background:var(--sky-bg);color:var(--sky);box-shadow:0 4px 0 var(--line)}
 .btn.green{background:var(--leaf);color:var(--card);box-shadow:0 4px 0 color-mix(in srgb,var(--leaf) 60%,#000)}
@@ -114,7 +114,7 @@ nav button[aria-selected="true"] small{color:var(--card);opacity:.8}
 .modes{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
 .mode{border:3px solid var(--line);background:var(--bg);border-radius:20px;padding:16px;text-align:start;display:grid;gap:4px}
 .mode b{font-family:var(--display);font-size:22px}
-.mode[aria-pressed="true"]{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,var(--card))}
+.mode[aria-pressed="true"]{border-color:var(--accent);background:var(--card);background:color-mix(in srgb,var(--accent) 12%,var(--card))}
 .results{width:100%;border-collapse:collapse;font-size:17px}
 .results td{padding:8px 6px;border-bottom:1px solid var(--line)}
 .results .x{color:var(--bad);text-decoration:line-through}
@@ -151,7 +151,7 @@ nav button[aria-selected="true"] small{color:var(--card);opacity:.8}
 .item .tag{position:absolute;top:6px;right:8px;font-size:12px;font-weight:800;color:var(--leaf)}
 
 /* Modal */
-.overlay{position:fixed;inset:0;background:color-mix(in srgb,var(--ink) 45%,transparent);display:grid;place-items:center;padding:16px;z-index:20}
+.overlay{position:fixed;inset:0;background:rgba(10,20,40,.55);background:color-mix(in srgb,var(--ink) 45%,transparent);display:grid;place-items:center;padding:16px;z-index:20}
 .modal{background:var(--card);border-radius:24px;padding:22px;width:min(420px,100%);display:grid;gap:12px;justify-items:center;text-align:center;border:2px solid var(--line)}
 
 /* My words */
@@ -245,8 +245,8 @@ const fresh=()=>({xp:0,coins:20,custom:[],owned:[],wear:{},full:60,fullAt:Date.n
 let S=fresh();
 /* Accept only known fields with the right types, so a broken or edited backup cannot break the page. */
 function cleanState(o){if(!o||typeof o!=='object')throw new Error('bad');const n=fresh();
-  const num=(v,min,max)=>Number.isFinite(v)?Math.min(max,Math.max(min,Math.round(v))):null;
-  n.xp=num(o.xp,0,1e6)??0;n.coins=num(o.coins,0,1e6)??20;n.full=num(o.full,0,100)??60;n.fullAt=num(o.fullAt,0,4e12)??Date.now();n.savedAt=num(o.savedAt,0,4e12)??0;
+  const num=(v,min,max,d)=>Number.isFinite(v)?Math.min(max,Math.max(min,Math.round(v))):d;
+  n.xp=num(o.xp,0,1e6,0);n.coins=num(o.coins,0,1e6,20);n.full=num(o.full,0,100,60);n.fullAt=num(o.fullAt,0,4e12,Date.now());n.savedAt=num(o.savedAt,0,4e12,0);
   if(Array.isArray(o.custom))n.custom=o.custom.filter(x=>x&&typeof x.en==='string'&&/^[A-Za-z][A-Za-z' -]{0,40}$/.test(x.en.trim())).slice(0,500).map(x=>({en:x.en.trim(),he:String(x.he||'').slice(0,60),emoji:String(x.emoji||'📝').slice(0,8)}));
   const wearNames=WEAR.map(w=>w.en);
   if(Array.isArray(o.owned))n.owned=o.owned.filter(x=>wearNames.includes(x));
