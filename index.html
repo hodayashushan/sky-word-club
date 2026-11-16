@@ -15,7 +15,7 @@
 :root{
   --bg:#E6F3EE; --dot:#C9E2D8; --card:#FFFFFF; --ink:#1B2A4E; --soft:#5A6A8B; --line:#D3E6DE;
   --accent:#FF6A33; --accent-ink:#FFFFFF; --sun:#FFC43D; --leaf:#16A06A; --leaf-bg:#DDF5EA;
-  --sky:#2C74E6; --sky-bg:#E3EEFF; --bad:#D93D44; --bad-bg:#FDE7E8; --vowel:#C2410C; --vowel-bg:#FFEBDD;
+  --sky:#2C74E6; --sky-bg:#E3EEFF; --bad:#D93D44; --bad-bg:#FDE7E8; --vowel:#C2410C; --vowel-bg:#FFEBDD; --rare:#1D7FD1; --epic:#8B4FD8; --legend:#C98A00; --floor:rgba(150,100,50,.16);
   --pip:#FFB43F; --pip2:#FFE1A0; --cheek:#FF8FA3;
   --display:"Baloo 2","Varela Round",system-ui,sans-serif;
   --body:"Nunito","Varela Round",system-ui,sans-serif;
@@ -24,12 +24,12 @@
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#122029; --dot:#1E3340; --card:#1B2D3A; --ink:#EAF2F8; --soft:#A2B6C6; --line:#2A4354;
   --accent:#FF8250; --accent-ink:#1A1208; --sun:#FFCE57; --leaf:#3CCB8E; --leaf-bg:#16392C;
-  --sky:#6AA2FF; --sky-bg:#1B3150; --bad:#FF6F74; --bad-bg:#3D1F23; --vowel:#FFA36B; --vowel-bg:#3A2418;
+  --sky:#6AA2FF; --sky-bg:#1B3150; --bad:#FF6F74; --bad-bg:#3D1F23; --vowel:#FFA36B; --vowel-bg:#3A2418; --rare:#5CB6FF; --epic:#B88CFF; --legend:#FFCB47; --floor:rgba(220,170,110,.14);
   --pip:#F2A535; --pip2:#F6D38C; --cheek:#E9768B; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#122029; --dot:#1E3340; --card:#1B2D3A; --ink:#EAF2F8; --soft:#A2B6C6; --line:#2A4354;
   --accent:#FF8250; --accent-ink:#1A1208; --sun:#FFCE57; --leaf:#3CCB8E; --leaf-bg:#16392C;
-  --sky:#6AA2FF; --sky-bg:#1B3150; --bad:#FF6F74; --bad-bg:#3D1F23; --vowel:#FFA36B; --vowel-bg:#3A2418;
+  --sky:#6AA2FF; --sky-bg:#1B3150; --bad:#FF6F74; --bad-bg:#3D1F23; --vowel:#FFA36B; --vowel-bg:#3A2418; --rare:#5CB6FF; --epic:#B88CFF; --legend:#FFCB47; --floor:rgba(220,170,110,.14);
   --pip:#F2A535; --pip2:#F6D38C; --cheek:#E9768B; color-scheme:dark}
 
 *{box-sizing:border-box}
@@ -128,7 +128,14 @@ nav button[aria-selected="true"] small{color:var(--card);opacity:.8}
 .nest{background:linear-gradient(var(--sky-bg),var(--bg));border-radius:22px;padding:18px;display:grid;justify-items:center;gap:12px;position:relative}
 .bubble{background:var(--card);border:2px solid var(--line);border-radius:18px;padding:8px 14px;font-weight:800;position:relative;text-align:center;max-width:100%}
 .bubble::after{content:"";position:absolute;left:50%;bottom:-9px;width:14px;height:14px;background:var(--card);border-right:2px solid var(--line);border-bottom:2px solid var(--line);transform:translateX(-50%) rotate(45deg)}
-.pet{position:relative;width:min(240px,70vw);aspect-ratio:1;max-width:100%}
+.room{position:relative;width:100%;border-radius:18px;padding:84px 12px 14px;display:grid;justify-items:center;background:var(--card);overflow:hidden;border:2px solid var(--line)}
+.room.painted{background:var(--paint),var(--card)}
+.room::after{content:"";position:absolute;left:0;right:0;bottom:0;height:24%;background:var(--floor);border-top:2px solid var(--line);z-index:0}
+.deco{position:absolute;line-height:1;z-index:1;font-size:clamp(34px,10vw,46px)}
+.deco.wall{top:12px;left:12px}.deco.ceiling{top:8px;right:12px}
+.deco.left{bottom:8px;left:6px;font-size:clamp(42px,13vw,58px);z-index:3}.deco.right{bottom:8px;right:6px;font-size:clamp(42px,13vw,58px);z-index:3}
+.shelf{position:absolute;top:14px;left:50%;transform:translateX(-50%);display:flex;gap:4px;font-size:24px;line-height:1;padding:0 6px 3px;border-bottom:4px solid var(--soft);z-index:1}
+.pet{position:relative;width:min(200px,52vw);aspect-ratio:1;max-width:100%;z-index:2}
 .pet svg{width:100%;height:100%;display:block}
 .pet.bounce{animation:bounce .6s}
 @keyframes bounce{30%{transform:translateY(-14px) scale(1.03)}60%{transform:translateY(0) scale(.98)}}
@@ -150,6 +157,25 @@ nav button[aria-selected="true"] small{color:var(--card);opacity:.8}
 .item.wearing{border-color:var(--leaf);background:var(--leaf-bg)}
 .item.locked{opacity:.55}
 .item .tag{position:absolute;top:6px;right:8px;font-size:12px;font-weight:800;color:var(--leaf)}
+.item .rar{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--soft)}
+.item.r-rare{border-color:var(--rare)}.item.r-rare .rar{color:var(--rare)}
+.item.r-epic{border-color:var(--epic)}.item.r-epic .rar{color:var(--epic)}
+.item.r-legendary{border-color:var(--legend);box-shadow:inset 0 0 0 2px var(--legend)}.item.r-legendary .rar{color:var(--legend)}
+.item.wearing{border-color:var(--leaf)}
+.shophead{grid-column:1/-1;font-family:var(--display);font-weight:800;font-size:17px;color:var(--soft);margin-top:4px}
+.boxcard{grid-column:1/-1;display:grid;justify-items:center;gap:8px;text-align:center;border:3px dashed var(--epic);border-radius:20px;padding:16px;background:var(--bg)}
+.boxemoji{font-size:72px;line-height:1}
+.boxtitle{font-family:var(--display);font-size:24px}
+.odds{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.rar-pill{border-radius:999px;padding:3px 10px;font-weight:800;font-size:13px;border:2px solid currentColor}
+.rar-pill.r-rare{color:var(--rare)}.rar-pill.r-epic{color:var(--epic)}.rar-pill.r-legendary{color:var(--legend)}
+.rar-pill.big{font-family:var(--display);font-size:24px;padding:4px 18px;text-transform:uppercase;letter-spacing:.06em}
+.shake{animation:boxshake .5s infinite}
+@keyframes boxshake{25%{transform:rotate(-10deg)}75%{transform:rotate(10deg)}}
+.revealemoji{font-size:110px;line-height:1.1;animation:pop .7s ease-out}
+@keyframes pop{0%{transform:scale(.2) rotate(-25deg);opacity:0}70%{transform:scale(1.2)}100%{transform:scale(1)}}
+.modal.reveal.r-rare{border-color:var(--rare)}.modal.reveal.r-epic{border-color:var(--epic)}
+.modal.reveal.r-legendary{border-color:var(--legend);box-shadow:0 0 0 4px var(--legend),0 0 40px var(--legend)}
 
 /* Modal */
 .overlay{position:fixed;inset:0;background:rgba(10,20,40,.55);background:color-mix(in srgb,var(--ink) 45%,transparent);display:grid;place-items:center;padding:16px;z-index:20}
@@ -267,38 +293,84 @@ const CATS=[
 const FOOD=[['apple','תפוח','🍎',5],['banana','בננה','🍌',5],['carrot','גזר','🥕',5],['egg','ביצה','🥚',6],['bread','לחם','🍞',6],['milk','חלב','🥛',6],['cookie','עוגייה','🍪',8,['עוגיה']],['sandwich','כריך','🥪',10,['סנדוויץ','סנדביץ','סנדוויץ׳']],['pizza','פיצה','🍕',12],['cake','עוגה','🍰',12],['chocolate','שוקולד','🍫',10],['juice','מיץ','🧃',6]];
 /* Hebrew answers: ignore niqqud, quote marks and spaces; accept listed spelling variants. */
 const normHe=s=>String(s).replace(/[֑-ׇ]/g,'').replace(/["'׳״`]/g,'').replace(/\s+/g,' ').trim();
+const RAR={common:['Common','רגיל'],rare:['Rare','נדיר'],epic:['Epic','מיוחד'],legendary:['Legendary','אגדי']};
+/* r = rarity. box:true = only from the surprise box. ach = earned by an achievement, never sold. */
 const WEAR=[
- {en:'hat',he:'כובע',e:'🎩',price:30,slot:'head',lvl:1},
- {en:'cap',he:'כובע מצחייה',e:'🧢',price:25,slot:'head',lvl:1},
- {en:'bow',he:'פפיון',e:'🎀',price:20,slot:'head',lvl:1},
- {en:'glasses',he:'משקפיים',e:'👓',price:25,slot:'eyes',lvl:1},
- {en:'scarf',he:'צעיף',e:'🧣',price:25,slot:'neck',lvl:2},
- {en:'shoes',he:'נעליים',e:'👟',price:30,slot:'feet',lvl:2},
- {en:'sunglasses',he:'משקפי שמש',e:'🕶️',price:40,slot:'eyes',lvl:3},
- {en:'boots',he:'מגפיים',e:'🥾',price:40,slot:'feet',lvl:3},
- {en:'necklace',he:'שרשרת',e:'📿',price:45,slot:'neck',lvl:4},
- {en:'crown',he:'כתר',e:'👑',price:80,slot:'head',lvl:5}
+ {en:'hat',he:'כובע',e:'🎩',price:30,slot:'head',lvl:1,r:'common'},
+ {en:'cap',he:'כובע מצחייה',e:'🧢',price:25,slot:'head',lvl:1,r:'common'},
+ {en:'bow',he:'פפיון',e:'🎀',price:20,slot:'head',lvl:1,r:'common'},
+ {en:'flower',he:'פרח',e:'🌸',price:35,slot:'head',lvl:2,r:'common'},
+ {en:'helmet',he:'קסדה',e:'⛑️',price:60,slot:'head',lvl:3,r:'rare'},
+ {en:'crown',he:'כתר',e:'👑',price:150,slot:'head',lvl:5,r:'epic'},
+ {en:'glasses',he:'משקפיים',e:'👓',price:25,slot:'eyes',lvl:1,r:'common'},
+ {en:'sunglasses',he:'משקפי שמש',e:'🕶️',price:45,slot:'eyes',lvl:3,r:'rare'},
+ {en:'goggles',he:'משקפי שחייה',e:'🥽',price:70,slot:'eyes',lvl:3,r:'rare'},
+ {en:'mask',he:'מסכת צלילה',e:'🤿',slot:'eyes',r:'epic',box:true},
+ {en:'scarf',he:'צעיף',e:'🧣',price:25,slot:'neck',lvl:2,r:'common'},
+ {en:'tie',he:'עניבה',e:'👔',price:35,slot:'neck',lvl:2,r:'common'},
+ {en:'necklace',he:'שרשרת',e:'📿',price:60,slot:'neck',lvl:4,r:'rare'},
+ {en:'diamond',he:'יהלום',e:'💎',slot:'neck',r:'legendary',box:true},
+ {en:'shoes',he:'נעליים',e:'👟',price:30,slot:'feet',lvl:2,r:'common'},
+ {en:'boots',he:'מגפיים',e:'🥾',price:45,slot:'feet',lvl:3,r:'rare'},
+ {en:'skates',he:'גלגיליות',e:'🛼',price:110,slot:'feet',lvl:4,r:'epic'}
 ];
+const ROOM=[
+ {en:'blue',he:'כחול',e:'🟦',price:20,slot:'paint',lvl:1,r:'common',paint:'rgba(44,116,230,.22)'},
+ {en:'pink',he:'ורוד',e:'🌸',price:20,slot:'paint',lvl:1,r:'common',paint:'rgba(255,110,170,.24)'},
+ {en:'green',he:'ירוק',e:'🟩',price:20,slot:'paint',lvl:1,r:'common',paint:'rgba(22,160,106,.22)'},
+ {en:'yellow',he:'צהוב',e:'🟨',price:20,slot:'paint',lvl:1,r:'common',paint:'rgba(255,196,61,.30)'},
+ {en:'purple',he:'סגול',e:'🟪',price:45,slot:'paint',lvl:2,r:'rare',paint:'rgba(140,90,220,.26)'},
+ {en:'gold',he:'זהב',e:'✨',slot:'paint',r:'legendary',box:true,paint:'linear-gradient(135deg,rgba(255,196,40,.50),rgba(255,236,160,.25) 50%,rgba(255,186,30,.50))'},
+ {en:'picture',he:'תמונה',e:'🖼️',price:30,slot:'wall',lvl:1,r:'common'},
+ {en:'clock',he:'שעון',e:'⏰',price:30,slot:'wall',lvl:1,r:'common'},
+ {en:'map',he:'מפה',e:'🗺️',price:60,slot:'wall',lvl:3,r:'rare'},
+ {en:'rainbow',he:'קשת',e:'🌈',slot:'wall',r:'legendary',box:true},
+ {en:'balloon',he:'בלון',e:'🎈',price:20,slot:'ceiling',lvl:1,r:'common'},
+ {en:'cloud',he:'ענן',e:'☁️',price:25,slot:'ceiling',lvl:1,r:'common'},
+ {en:'moon',he:'ירח',e:'🌙',price:40,slot:'ceiling',lvl:2,r:'common'},
+ {en:'rocket',he:'חללית',e:'🚀',price:120,slot:'ceiling',lvl:4,r:'epic'},
+ {en:'planet',he:'כוכב לכת',e:'🪐',slot:'ceiling',r:'epic',box:true},
+ {en:'plant',he:'עציץ',e:'🪴',price:25,slot:'left',lvl:1,r:'common'},
+ {en:'lamp',he:'מנורה',e:'💡',price:30,slot:'left',lvl:1,r:'common'},
+ {en:'sofa',he:'ספה',e:'🛋️',price:70,slot:'left',lvl:3,r:'rare'},
+ {en:'castle',he:'טירה',e:'🏰',slot:'left',r:'legendary',box:true},
+ {en:'teddy bear',he:'דובי',e:'🧸',price:35,slot:'right',lvl:1,r:'common'},
+ {en:'bed',he:'מיטה',e:'🛏️',price:50,slot:'right',lvl:2,r:'common'},
+ {en:'guitar',he:'גיטרה',e:'🎸',price:80,slot:'right',lvl:3,r:'rare'},
+ {en:'piano',he:'פסנתר',e:'🎹',price:130,slot:'right',lvl:5,r:'epic'},
+ {en:'unicorn',he:'חד קרן',e:'🦄',slot:'right',r:'legendary',box:true},
+ {en:'books',he:'ספרים',e:'📚',slot:'shelf',r:'rare',ach:'books'},
+ {en:'medal',he:'מדליה',e:'🥇',slot:'shelf',r:'epic',ach:'level5'},
+ {en:'trophy',he:'גביע',e:'🏆',slot:'shelf',r:'legendary',ach:'perfect'},
+ {en:'star',he:'כוכב',e:'🌟',slot:'shelf',r:'legendary',ach:'abc'}
+];
+const ITEMS=WEAR.concat(ROOM);
+const itemBy=en=>ITEMS.find(x=>x.en===en);
+const ROOM_SLOTS=['paint','wall','ceiling','left','right'];
+const ACH={books:['Add 10 of my words','להוסיף 10 מילים משלי'],level5:['Reach level 5','להגיע לדרגה 5'],perfect:['Get 100% in a spelling test','לקבל 100 במבחן הכתבה'],abc:['Mark all 26 letters as learned','לסמן את כל 26 האותיות']};
+const BOX_PRICE=60;
 const LEVELS=[['Egg','ביצה'],['Chick','אפרוח'],['Little Bird','ציפור קטנה'],['Word Explorer','חוקר מילים'],['Super Speller','מאיית על'],['Word Star','כוכב מילים'],['Word Champion','אלוף מילים'],['Word Master','אלוף האלופים']];
 const XP_PER_LEVEL=60;
 
 /* ---------- State ---------- */
 const KEY='pip-word-club-v1';
-const fresh=()=>({xp:0,coins:20,custom:[],owned:[],wear:{},full:60,fullAt:Date.now(),seen:{},savedAt:0,abc:{stars:{},learned:{}}});
+const fresh=()=>({xp:0,coins:20,custom:[],owned:[],wear:{},full:60,fullAt:Date.now(),seen:{},savedAt:0,abc:{stars:{},learned:{}},place:{},perfect:0});
 let S=fresh();
 /* Accept only known fields with the right types, so a broken or edited backup cannot break the page. */
 function cleanState(o){if(!o||typeof o!=='object')throw new Error('bad');const n=fresh();
   const num=(v,min,max,d)=>Number.isFinite(v)?Math.min(max,Math.max(min,Math.round(v))):d;
   n.xp=num(o.xp,0,1e6,0);n.coins=num(o.coins,0,1e6,20);n.full=num(o.full,0,100,60);n.fullAt=num(o.fullAt,0,4e12,Date.now());n.savedAt=num(o.savedAt,0,4e12,0);
   if(Array.isArray(o.custom))n.custom=o.custom.filter(x=>x&&typeof x.en==='string'&&/^[A-Za-z][A-Za-z' -]{0,40}$/.test(x.en.trim())).slice(0,500).map(x=>({en:x.en.trim(),he:String(x.he||'').slice(0,60),emoji:String(x.emoji||'📝').slice(0,8)}));
-  const wearNames=WEAR.map(w=>w.en);
-  if(Array.isArray(o.owned))n.owned=o.owned.filter(x=>wearNames.includes(x));
+  const allNames=ITEMS.map(w=>w.en);
+  if(Array.isArray(o.owned))n.owned=o.owned.filter((x,i,a)=>allNames.includes(x)&&a.indexOf(x)===i);
+  if(o.place&&typeof o.place==='object')for(const s of ROOM_SLOTS){const it=ROOM.find(w=>w.en===o.place[s]&&w.slot===s);if(it&&n.owned.includes(it.en))n.place[s]=it.en;}
+  n.perfect=num(o.perfect,0,1e6,0);
   if(o.wear&&typeof o.wear==='object')for(const s of ['head','eyes','neck','feet']){const it=WEAR.find(w=>w.en===o.wear[s]&&w.slot===s);if(it&&n.owned.includes(it.en))n.wear[s]=it.en;}
   if(o.seen&&typeof o.seen==='object')for(const k of Object.keys(o.seen).slice(0,2000))if(typeof k==='string'&&k.length<40)n.seen[k]=1;
   if(o.abc&&typeof o.abc==='object'){for(const k of ['stars','learned']){const src=o.abc[k];if(src&&typeof src==='object')for(const L of Object.keys(src))if(/^[A-Z]$/.test(L)){const v=Math.round(+src[L]);if(v>0)n.abc[k][L]=Math.min(k==='stars'?3:1,v);}}}
   return n;}
 try{const r=localStorage.getItem(KEY);if(r)S=cleanState(JSON.parse(r));}catch(e){}
-function save(){S.savedAt=Date.now();try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}queuePush();}
+function save(){checkAch();S.savedAt=Date.now();try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}queuePush();}
 
 /* ---------- Cloud save (signed-in viewers): a private record per person ---------- */
 const cloud={ref:null,status:'local'};
@@ -322,6 +394,12 @@ async function pushCloud(){if(!cloud.ref)return;if(pushing){pushAgain=true;retur
   try{await cloud.ref.set({state:JSON.stringify(S),savedAt:S.savedAt||Date.now()});setStatus('cloud');}
   catch(e){if(e&&e.code==='unavailable'){setStatus('local');setTimeout(()=>{if(!pushing)pushCloud();},2000+Math.random()*2000);}else{cloud.ref=null;setStatus('local');}}
   pushing=false;if(pushAgain){pushAgain=false;pushCloud();}}
+
+/* ---------- Achievements: special items that cannot be bought ---------- */
+function achDone(id){if(id==='books')return S.custom.length>=10;if(id==='level5')return level()>=5;if(id==='perfect')return (S.perfect||0)>=1;
+  if(id==='abc'){const l=(S.abc&&S.abc.learned)||{};return Object.keys(l).filter(k=>l[k]).length>=26;}return false;}
+function checkAch(){ROOM.forEach(it=>{if(it.ach&&!S.owned.includes(it.en)&&achDone(it.ach)){S.owned.push(it.en);
+  setTimeout(()=>{toast(`🎁 ${RAR[it.r][0]}! ${it.e} ${it.en} · <span dir="rtl">פרס ${RAR[it.r][1]}: ${it.he}</span>`);try{sparks(document.querySelector('.stat'),it.e);}catch(e){}},1400);}});}
 
 /* ---------- Backup code (works without any account) ---------- */
 function makeCode(){const j=JSON.stringify(S);return 'PIP1-'+btoa(unescape(encodeURIComponent(j)));}
@@ -464,7 +542,7 @@ function checkSpell(){const a=$('#ans');if(!a||D.solved)return;const val=a.value
   else{D.fbHTML=bi('Not yet. Try again!','עוד לא. נסו שוב!');D.fbCls='bad';const keep=val;renderSpell();const b=$('#ans');b.value=keep;b.select();}}
 function nextWord(){D.i++;if(D.i>=D.list.length){finishSpell();return;}resetWord();D.copyMode=false;renderSpell();setTimeout(()=>say(D.list[D.i][0]),250);}
 function finishSpell(){D.phase='end';
-  if(D.mode==='test'){const r=D.results.filter(x=>x.ok).length;let xp=r*10,c=r*5;if(r===D.results.length&&r>=5){xp+=20;c+=20;}D.earned=c;if(xp)award(xp,c);}
+  if(D.mode==='test'){const r=D.results.filter(x=>x.ok).length;let xp=r*10,c=r*5;if(r===D.results.length&&r>=5){xp+=20;c+=20;S.perfect=(S.perfect||0)+1;}D.earned=c;if(xp)award(xp,c);}
   renderSpell();}
 function renderSpellEnd(){const r=D.results.filter(x=>x.ok).length,n=D.results.length,pct=n?Math.round(r/n*100):0;
   const msg=pct===100?['Perfect!','מושלם!','🏆']:pct>=70?['Great work!','עבודה מצוינת!','🌟']:['Keep practicing!','ממשיכים להתאמן!','💪'];
@@ -488,28 +566,87 @@ function renderPip(){const f=fullNow(),mood=f>=70?'happy':f>=35?'ok':'sad',lvl=l
   const moodTxt={happy:['I am happy! Thank you!','אני שמח! תודה!'],ok:['I am OK. I am a bit hungry.','אני בסדר. קצת רעב.'],sad:['I am hungry! Please feed me.','אני רעב! בבקשה תאכילו אותי.']}[mood];
   const m=pipMsg||moodTxt;
   const slots=['head','eyes','neck','feet'].map(s=>{const it=WEAR.find(x=>x.en===S.wear[s]);if(!it)return'';return `<span class="slot ${s}">${s==='feet'?it.e+it.e:it.e}</span>`;}).join('');
-  const items=shopTab==='food'?FOOD.map((x,i)=>`<button class="item" data-act="shop" data-k="food" data-i="${i}"><span class="e">${x[2]}</span><span class="n">${x[0]}</span><span class="p">🪙 ${x[3]}</span></button>`).join('')
-    :WEAR.map((x,i)=>{const own=S.owned.includes(x.en),on=S.wear[x.slot]===x.en,lock=lvl<x.lvl;
-      return `<button class="item ${on?'wearing':''} ${lock&&!own?'locked':''}" data-act="shop" data-k="wear" data-i="${i}">${on?'<span class="tag">ON</span>':''}<span class="e">${x.e}</span><span class="n">${x.en}</span><span class="p">${own?(on?'Take off':'Put on'):lock?'🔒 Level '+x.lvl:'🪙 '+x.price}</span></button>`;}).join('');
+  const paint=ROOM.find(x=>x.en===S.place.paint);
+  const deco=['wall','ceiling','left','right'].map(sl=>{const it=ROOM.find(x=>x.en===S.place[sl]);return it?`<span class="deco ${sl}" title="${esc(it.en)}">${it.e}</span>`:'';}).join('');
+  const shelf=ROOM.filter(x=>x.slot==='shelf'&&S.owned.includes(x.en));
+  const owned=ITEMS.filter(x=>S.owned.includes(x.en)).length;
+  const card=(x)=>{const i=ITEMS.indexOf(x),own=S.owned.includes(x.en),on=WEAR.includes(x)?S.wear[x.slot]===x.en:S.place[x.slot]===x.en,lock=!own&&!x.box&&!x.ach&&lvl<x.lvl;
+    const hidden=!own&&(x.box||x.ach);
+    let p;if(own)p=x.slot==='shelf'?bi('Prize','פרס'):on?(WEAR.includes(x)?'Take off':'Remove'):(WEAR.includes(x)?'Put on':'Use');
+    else if(x.ach)p=`🔒 ${bi(ACH[x.ach][0],ACH[x.ach][1])}`;else if(x.box)p='🎁 Surprise box';else if(lock)p='🔒 Level '+x.lvl;else p='🪙 '+x.price;
+    return `<button class="item r-${x.r} ${on?'wearing':''} ${lock||hidden?'locked':''}" data-act="shop" data-k="item" data-i="${i}">${on?'<span class="tag">ON</span>':''}<span class="rar">${RAR[x.r][0]}</span><span class="e">${hidden?'❓':x.e}</span><span class="n">${hidden?'???':esc(x.en)}</span><span class="p">${p}</span></button>`;};
+  const SLOTN={head:['Head','ראש'],eyes:['Eyes','עיניים'],neck:['Neck','צוואר'],feet:['Feet','רגליים'],paint:['Wall color','צבע הקיר'],wall:['On the wall','על הקיר'],ceiling:['Up high','למעלה'],left:['Floor (left)','רצפה (שמאל)'],right:['Floor (right)','רצפה (ימין)'],shelf:['Prize shelf','מדף הפרסים']};
+  const group=(list,slots)=>slots.map(sl=>`<div class="shophead">${bi(SLOTN[sl][0],SLOTN[sl][1])}</div>`+list.filter(x=>x.slot===sl).map(card).join('')).join('');
+  let items;
+  if(shopTab==='food')items=FOOD.map((x,i)=>`<button class="item" data-act="shop" data-k="food" data-i="${i}"><span class="e">${x[2]}</span><span class="n">${x[0]}</span><span class="p">🪙 ${x[3]}</span></button>`).join('');
+  else if(shopTab==='wear')items=group(WEAR,['head','eyes','neck','feet']);
+  else if(shopTab==='room')items=group(ROOM,['paint','wall','ceiling','left','right','shelf']);
+  else{const left=boxPool().length;
+    items=`<div class="boxcard"><div class="boxemoji">🎁</div><b class="boxtitle">${bi('Surprise box','קופסת הפתעה')}</b>
+      <div class="muted">${bi('Spell a word to open it. Inside: a Rare, Epic or Legendary item!','כותבים מילה באנגלית כדי לפתוח. בפנים יש פריט נדיר, מיוחד או אגדי!')}</div>
+      <div class="odds"><span class="rar-pill r-rare">Rare 60%</span><span class="rar-pill r-epic">Epic 30%</span><span class="rar-pill r-legendary">Legendary 10%</span></div>
+      ${left?`<button class="btn" data-act="openBox">🎁 Open · 🪙 ${BOX_PRICE}</button><div class="muted" style="font-size:14px">${bi(left+' surprises left','נשארו '+left+' הפתעות')}</div>`:`<div class="feedback good">${bi('You found every surprise!','מצאת את כל ההפתעות!')}</div>`}</div>`
+      +`<div class="shophead">${bi('Only in the box','רק בקופסה')}</div>`+ITEMS.filter(x=>x.box).map(card).join('');}
+  const help={food:['Tap food. Write the word in Hebrew to give it to Sky.','לוחצים על אוכל וכותבים את המילה בעברית כדי לתת לסקיי.'],wear:['Tap clothes. Write the word to buy it. Tap again to put on or take off.','לוחצים על בגד וכותבים את המילה כדי לקנות. לחיצה נוספת מלבישה או מורידה.'],room:['Decorate Sky\'s room. Write the word to buy. Tap again to use or remove.','מעצבים את החדר של סקיי. כותבים את המילה כדי לקנות. לחיצה נוספת מוסיפה או מורידה.'],box:['Rare things come from the box and from prizes.','דברים נדירים מקבלים מהקופסה ומפרסים.']}[shopTab];
   $('#view').innerHTML=`<div class="title"><h2>${bi('🐣 This is Sky','זה סקיי, החיה שלך')}</h2><span class="muted">${bi('Spell words, earn coins, take care of Sky.','כותבים מילים, מרוויחים מטבעות ודואגים לסקיי.')}</span></div>
   <div class="pipgrid">
     <div class="nest">
       <div class="bubble">${bi(esc(m[0]),esc(m[1]))}</div>
-      <div class="pet" id="pet">${pipSVG(mood)}${slots}</div>
+      <div class="room${paint?' painted':''}" ${paint?`style="--paint:${paint.paint.indexOf('gradient')>=0?paint.paint:`linear-gradient(${paint.paint},${paint.paint})`}"`:''}>
+        ${deco}${shelf.length?`<div class="shelf">${shelf.map(x=>`<span title="${esc(x.en)}">${x.e}</span>`).join('')}</div>`:''}
+        <div class="pet" id="pet">${pipSVG(mood)}${slots}</div>
+      </div>
       <div class="meter"><div class="row" style="justify-content:space-between"><b>${bi('Food','אוכל')}</b><span class="counter">${f}%</span></div><div class="bar"><i style="width:${f}%;background:${f>=70?'var(--leaf)':f>=35?'var(--sun)':'var(--bad)'}"></i></div></div>
       <div class="meter"><div class="row" style="justify-content:space-between"><b>${bi('Level '+lvl+' · '+levelName(lvl)[0],levelName(lvl)[1])}</b><span class="counter">${S.xp%XP_PER_LEVEL}/${XP_PER_LEVEL}</span></div><div class="bar"><i style="width:${(S.xp%XP_PER_LEVEL)/XP_PER_LEVEL*100}%;background:var(--sun)"></i></div></div>
     </div>
-    <div style="display:grid;gap:12px;min-width:0">
-      <div class="chips"><button class="chip" data-act="shopTab" data-v="food" aria-pressed="${shopTab==='food'}">🍎 ${bi('Food','אוכל')}</button><button class="chip" data-act="shopTab" data-v="wear" aria-pressed="${shopTab==='wear'}">👕 ${bi('Clothes','בגדים')}</button><span class="stat">🪙 ${S.coins}</span></div>
-      <p class="muted" style="margin:0">${bi(shopTab==='food'?'Tap food. Write the word to give it to Sky.':'Tap clothes. Write the word to buy it. Tap again to put on or take off.',shopTab==='food'?'לוחצים על אוכל וכותבים את המילה כדי לתת לסקיי.':'לוחצים על בגד וכותבים את המילה כדי לקנות. לחיצה נוספת מלבישה או מורידה.')}</p>
+    <div style="display:grid;gap:12px;min-width:0;align-content:start">
+      <div class="chips"><button class="chip" data-act="shopTab" data-v="food" aria-pressed="${shopTab==='food'}">🍎 ${bi('Food','אוכל')}</button><button class="chip" data-act="shopTab" data-v="wear" aria-pressed="${shopTab==='wear'}">👕 ${bi('Clothes','בגדים')}</button><button class="chip" data-act="shopTab" data-v="room" aria-pressed="${shopTab==='room'}">🛋️ ${bi('Room','חדר')}</button><button class="chip" data-act="shopTab" data-v="box" aria-pressed="${shopTab==='box'}">🎁 ${bi('Surprise','הפתעה')}</button></div>
+      <div class="row"><span class="stat">🪙 ${S.coins}</span><span class="stat" title="Collection">🗂️ ${owned} / ${ITEMS.length}</span></div>
+      <p class="muted" style="margin:0">${bi(help[0],help[1])}</p>
       <div class="shop">${items}</div>
     </div>
   </div>`;}
+function boxPool(){return ITEMS.filter(x=>!x.ach&&x.r!=='common'&&!S.owned.includes(x.en));}
+let boxWord=null;
+function openBox(){if(!boxPool().length)return;
+  if(S.coins<BOX_PRICE){$('#modal').innerHTML=`<div class="modal"><div class="big-emoji">🎁</div><div class="feedback bad">${bi(`You need ${BOX_PRICE-S.coins} more coins.`,`חסרים לך ${BOX_PRICE-S.coins} מטבעות.`)}</div><div class="row center"><button class="btn" data-act="goto" data-v="spell">✏️ Go spell</button><button class="btn alt" data-act="closeModal">Close</button></div></div>`;$('#modal').hidden=false;return;}
+  const pool=CATS.filter(c=>!c.noPic).flatMap(c=>c.w).concat(S.custom.map(x=>[x.en,x.he||'—',x.emoji||'📝']));
+  boxWord=pool[Math.random()*pool.length|0];
+  $('#modal').innerHTML=`<div class="modal" role="dialog" aria-modal="true"><div class="boxemoji shake">🎁</div>
+    <b>${bi('Spell this word to open the box:','כתבו את המילה באנגלית כדי לפתוח:')}</b>
+    <div class="big-emoji">${boxWord[2]}</div>
+    <div class="row center"><button class="btn alt" data-act="say" data-w="${esc(boxWord[0])}">🔊 Listen</button>${bi('Meaning',esc(boxWord[1]))}</div>
+    <form id="boxForm" autocomplete="off" style="width:100%;display:grid;justify-items:center"><input class="answer" id="boxIn" autocapitalize="off" autocorrect="off" spellcheck="false" style="font-size:28px"></form>
+    <div class="feedback" id="boxFb"></div>
+    <div class="row center"><button class="btn green" data-act="boxGo">🎁 Open · 🪙 ${BOX_PRICE}</button><button class="btn alt" data-act="closeModal">Cancel</button></div></div>`;
+  $('#modal').hidden=false;say(boxWord[0]);$('#boxIn').focus();}
+function boxGo(){const v=$('#boxIn').value;
+  if(norm(v)!==norm(boxWord[0])){boxWord.t=(boxWord.t||0)+1;const fb=$('#boxFb');fb.className='feedback bad';fb.innerHTML=boxWord.t>=2?bi(`It is "${esc(boxWord[0])}". Write it to open.`,`המילה היא "${esc(boxWord[0])}". כתבו אותה כדי לפתוח.`):bi('Not yet. Listen again and try!','עוד לא. הקשיבו שוב ונסו!');say(boxWord[0]);return;}
+  const pool=boxPool();if(!pool.length){closeModal();return;}
+  const w={rare:60,epic:30,legendary:10},have=Object.keys(w).filter(r=>pool.some(x=>x.r===r));
+  let tot=have.reduce((a,r)=>a+w[r],0),roll=Math.random()*tot,rar=have[0];for(const r of have){if(roll<w[r]){rar=r;break;}roll-=w[r];}
+  const opts=pool.filter(x=>x.r===rar),it=opts[Math.random()*opts.length|0];
+  S.coins-=BOX_PRICE;S.owned.push(it.en);S.xp+=5;
+  if(WEAR.includes(it))S.wear[it.slot]=it.en;else if(it.slot!=='shelf')S.place[it.slot]=it.en;
+  pipMsg=[`Wow! A ${it.en}!`,`וואו! ${it.he}!`];save();renderStats();
+  $('#modal').innerHTML=`<div class="modal reveal r-${it.r}" role="dialog" aria-modal="true"><div class="boxemoji shake">🎁</div><div class="muted">${bi('Opening…','פותחים…')}</div></div>`;
+  setTimeout(()=>{$('#modal').innerHTML=`<div class="modal reveal r-${it.r}" role="dialog" aria-modal="true">
+    <span class="rar-pill r-${it.r} big">${RAR[it.r][0]}!</span><div class="revealemoji">${it.e}</div><div class="big-word" style="font-size:40px">${esc(it.en)}</div>
+    <div>${bi('Meaning',esc(it.he))}</div><div class="row center"><button class="btn alt" data-act="say" data-w="${esc(it.en)}">🔊 Listen</button><button class="btn" data-act="closeModal">${bi('Cool!','מגניב!')}</button></div></div>`;
+    say(it.en);renderPip();sparks($('#modal .revealemoji'),it.r==='legendary'?'🌟':'✨');},1100);}
+
 let buying=null;
 function openShop(kind,i){
-  if(kind==='wear'){const x=WEAR[i];if(S.owned.includes(x.en)){if(S.wear[x.slot]===x.en){delete S.wear[x.slot];pipMsg=null;}else{S.wear[x.slot]=x.en;pipMsg=[`I love my ${x.en}!`,`אני אוהב את ה${x.he} שלי!`];say(x.en);}save();renderPip();bouncePet();return;}
+  if(kind==='item'){const x=ITEMS[i];if(!x)return;const isW=WEAR.includes(x);
+    if(S.owned.includes(x.en)){
+      if(x.slot==='shelf'){say(x.en);toast(`${x.e} ${esc(x.en)} · <span dir="rtl">${esc(x.he)}</span>`);return;}
+      const map=isW?S.wear:S.place;
+      if(map[x.slot]===x.en){delete map[x.slot];pipMsg=null;}else{map[x.slot]=x.en;pipMsg=isW?[`I love my ${x.en}!`,`אני אוהב את ה${x.he} שלי!`]:[`I like the ${x.en}!`,`אני אוהב את ה${x.he}!`];say(x.en);}
+      save();renderPip();bouncePet();return;}
+    if(x.ach){toast(`🔒 ${ACH[x.ach][0]} · <span dir="rtl">${ACH[x.ach][1]}</span>`);return;}
+    if(x.box){shopTab='box';renderPip();return;}
     if(level()<x.lvl){toast(`🔒 Level ${x.lvl} · <span dir="rtl">צריך דרגה ${x.lvl}</span>`);return;}
-    buying={kind,en:x.en,he:x.he,e:x.e,price:x.price,slot:x.slot};}
+    buying={kind:'item',en:x.en,he:x.he,e:x.e,price:x.price,slot:x.slot,isW};}
   else{const x=FOOD[i];buying={kind,en:x[0],he:x[1],e:x[2],price:x[3],alts:x[4]||[],tries:0};}
   const can=S.coins>=buying.price;
   $('#modal').innerHTML=`<div class="modal" role="dialog" aria-modal="true">
@@ -529,7 +666,7 @@ function doBuy(){const v=$('#buyIn').value;
   else if(norm(v)!==norm(buying.en)){$('#buyFb').className='feedback bad';$('#buyFb').innerHTML=bi(`Check the spelling: ${esc(buying.en)}`,'בדקו את האיות');return;}
   S.coins-=buying.price;
   if(buying.kind==='food'){S.full=Math.min(100,fullNow()+20);S.fullAt=Date.now();S.xp+=2;pipMsg=[`Yum! I like the ${buying.en}!`,`יאמי! אני אוהב ${buying.he}!`];}
-  else{S.owned.push(buying.en);S.wear[buying.slot]=buying.en;S.xp+=5;pipMsg=[`Wow! A new ${buying.en}!`,`וואו! ${buying.he} חדש!`];}
+  else{S.owned.push(buying.en);if(buying.isW)S.wear[buying.slot]=buying.en;else if(buying.slot!=='shelf')S.place[buying.slot]=buying.en;S.xp+=5;pipMsg=[`Wow! A new ${buying.en}!`,`וואו! ${buying.he} חדש!`];}
   save();renderStats();closeModal();const e=buying.e,k=buying.kind;say(buying.en);renderPip();bouncePet();
   if(k==='food'){const p=$('#pet');const y=document.createElement('span');y.className='yum';y.textContent=e;p.appendChild(y);setTimeout(()=>y.remove(),1000);}else sparks($('#pet'),'✨');}
 function bouncePet(){const p=$('#pet');if(!p)return;p.classList.remove('bounce');void p.offsetWidth;p.classList.add('bounce');}
@@ -615,6 +752,8 @@ document.addEventListener('click',e=>{
   if(a==='shopTab'){shopTab=b.dataset.v;renderPip();return;}
   if(a==='shop'){openShop(b.dataset.k,+b.dataset.i);return;}
   if(a==='buy'){doBuy();return;}
+  if(a==='openBox'){openBox();return;}
+  if(a==='boxGo'){boxGo();return;}
   if(a==='closeModal'){restoreReady=null;closeModal();return;}
   if(a==='openSave'){restoreReady=null;openSave();return;}
   if(a==='copyCode'){const t=$('#codeOut');const done=()=>{$('#saveFb').className='feedback good';$('#saveFb').innerHTML=bi('Copied!','הקוד הועתק!');};
@@ -632,6 +771,7 @@ document.addEventListener('click',e=>{
 document.addEventListener('submit',e=>{e.preventDefault();
   if(e.target.id==='spellForm'){checkSpell();}
   else if(e.target.id==='buyForm'){doBuy();}
+  else if(e.target.id==='boxForm'){boxGo();}
   else if(e.target.id==='addForm'){const r=addWord($('#nEn').value,$('#nHe').value,$('#nEm').value);
     mineMsg={ok:'Added ✔',empty:'!Write an English word.',bad:'!Use English letters only.',dup:'!This word is already in your list.'}[r];if(r==='ok')save();renderMine();if(r==='ok')$('#nEn').focus();}
 });
